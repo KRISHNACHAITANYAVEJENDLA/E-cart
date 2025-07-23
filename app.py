@@ -18,33 +18,42 @@ def save_users(users):
     with open(USERS_FILE, 'w') as f:
         json.dump(users, f)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['username']
-        password = request.form['password']
-        users = load_users()
-        if email in users and users[email] == password:
-            session['user'] = email
-            flash('Login successful!', 'success')
-            return redirect(url_for('dashboard'))
-        flash('Invalid username or password', 'danger')
-    return render_template('login.html')
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
         users = load_users()
+
         if email in users:
             flash('User already exists. Please login.', 'warning')
             return redirect(url_for('login'))
+
         users[email] = password
         save_users(users)
         flash('Registration successful! Please login.', 'success')
         return redirect(url_for('login'))
+
     return render_template('registeration.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['username']
+        password = request.form['password']
+        users = load_users()
+
+        if email not in users:
+            flash('User not registered. Please sign up first.', 'danger')
+            return redirect(url_for('register'))
+
+        if users[email] == password:
+            session['user'] = email
+            flash('Login successful!', 'success')
+            return redirect(url_for('dashboard'))
+
+        flash('Incorrect password. Please try again.', 'danger')
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
@@ -57,8 +66,8 @@ def logout():
 # ----------------- Product Listings ------------------
 
 products = [
-    {"id": 1, "name": "Wireless Headphones", "desc": "Noise-cancelling Bluetooth headphones.", "price": 4000, "img": "images/wireless headphones.jpeg"},
-    {"id": 2, "name": "Smart Watch", "desc": "Tracks fitness, heart rate, and notifications.", "price": 8999, "img": "images/smart watch.webp"},
+    {"id": 1, "name": "Wireless Headphones", "desc": "Noise-cancelling Bluetooth headphones.", "price": 4000, "img": "images/wirelessheadphones.jpeg"},
+    {"id": 2, "name": "Smart Watch", "desc": "Tracks fitness, heart rate, and notifications.", "price": 8999, "img": "images/smart_watch.webp"},
     {"id": 3, "name": "USB-C Cable", "desc": "Fast-charging USB-C cable for Android devices.", "price": 999, "img": "images/usbc.jpeg"},
     {"id": 4, "name": "Laptop Backpack", "desc": "Waterproof backpack fits 15.6\" laptops.", "price": 2999, "img": "images/LaptopBackpack.webp"},
     {"id": 5, "name": "Wireless Mouse", "desc": "Ergonomic mouse with 3 DPI settings.", "price": 1499, "img": "images/wirelessmouse.jpeg"},
@@ -128,8 +137,6 @@ def yourorders():
         return redirect(url_for('login'))
     cart = session.get('cart', [])
     return render_template('yourorders.html', cart=cart)
-
-# ----------------- Other Pages ------------------
 
 @app.route('/settings')
 def settings():
