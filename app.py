@@ -67,7 +67,7 @@ def logout():
 
 products = [
     {"id": 1, "name": "Wireless Headphones", "desc": "Noise-cancelling Bluetooth headphones.", "price": 4000, "img": "images/wirelessheadphones.jpeg"},
-    {"id": 2, "name": "Smart Watch", "desc": "Tracks fitness, heart rate, and notifications.", "price": 8999, "img": "images/smart_watch.webp"},
+    {"id": 2, "name": "Smart Watch", "desc": "Tracks fitness, heart rate, and notifications.", "price": 8999, "img": "images/smart watch.webp"},
     {"id": 3, "name": "USB-C Cable", "desc": "Fast-charging USB-C cable for Android devices.", "price": 999, "img": "images/usbc.jpeg"},
     {"id": 4, "name": "Laptop Backpack", "desc": "Waterproof backpack fits 15.6\" laptops.", "price": 2999, "img": "images/LaptopBackpack.webp"},
     {"id": 5, "name": "Wireless Mouse", "desc": "Ergonomic mouse with 3 DPI settings.", "price": 1499, "img": "images/wirelessmouse.jpeg"},
